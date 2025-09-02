@@ -17,7 +17,7 @@ export const AccessibilityFeatures = () => {
           <div key={sectionIndex}>
             {sectionIndex > 0 && <Separator />}
             <div>
-              <h4 className={`font-semibold mb-2 ${section.colorClass}`}>
+              <h4 className={`font-semibold my-4 ${section.colorClass}`}>
                 {section.title}
               </h4>
               <ul className="text-sm space-y-1 text-muted-foreground">
