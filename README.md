@@ -1,13 +1,13 @@
 # synca-tower-defense
 
-The deployed version on the web can be found at this URL: [https://app.example.com/](https://app.example.com/)
+The deployed version on the web can be found at this URL: [https://synca-tower-defense.vercel.app/](https://synca-tower-defense.vercel.app/)
 
 ## 🚀 Installation
 
-1. Clone the repository: `git clone https://github.com/link.git`
+1. Clone the repository: `git clone https://github.com/pavle99/synca-tower-defense`
 2. Open the project folder with VSCode (or your preferred editor) and open the integrated terminal
 3. Install (or update) Node and NPM:
-   - On windows, download and install the latest version of Node from [here](https://nodejs.org/en/download/).
+   - On windows, download and install the latest version of Node from [this link](https://nodejs.org/en/download/).
    - On linux, run the following commands:
      - Install curl: `sudo apt install curl`
      - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash`
