@@ -11,7 +11,6 @@ export type MapJSON = {
   width: number;
   height: number;
   tiles: {
-    buildable: Vec2[];
     blocked: Vec2[];
     path: Vec2[];
   };

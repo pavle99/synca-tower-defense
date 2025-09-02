@@ -6,11 +6,7 @@ export function validateMapStructure(mapData: MapJSON): void {
     throw new Error("Invalid map structure: missing width, height, or tiles");
   }
 
-  if (
-    !mapData.tiles.buildable ||
-    !mapData.tiles.blocked ||
-    !mapData.tiles.path
-  ) {
+  if (!mapData.tiles.blocked || !mapData.tiles.path) {
     throw new Error("Invalid map structure: missing tile arrays");
   }
 }
@@ -47,7 +43,6 @@ export function validatePathExists(mapData: MapJSON): void {
 
 export function validateMapData(mapData: MapJSON): void {
   validateMapStructure(mapData);
-  validatePositions(mapData.tiles.buildable, "buildable", mapData);
   validatePositions(mapData.tiles.blocked, "blocked", mapData);
   validatePositions(mapData.tiles.path, "path", mapData);
   validatePathExists(mapData);

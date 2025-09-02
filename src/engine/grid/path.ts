@@ -7,6 +7,157 @@ function createMultiplePaths(
   height: number,
   tiles: GridTile[][]
 ): GamePathType[] {
+  // Check if there are existing path tiles in the grid
+  const existingPathTiles = findExistingPathTiles(tiles);
+
+  if (existingPathTiles.length > 0) {
+    // Use existing path tiles to create paths
+    return createPathsFromExistingTiles(
+      width,
+      height,
+      tiles,
+      existingPathTiles
+    );
+  }
+
+  // No existing path tiles, create default paths
+  return createDefaultPaths(width, height, tiles);
+}
+
+function findExistingPathTiles(tiles: GridTile[][]): Vec2[] {
+  const pathTiles: Vec2[] = [];
+  for (let y = 0; y < tiles.length; y++) {
+    for (let x = 0; x < tiles[y].length; x++) {
+      if (tiles[y][x].type === "path") {
+        pathTiles.push({ x, y });
+      }
+    }
+  }
+  return pathTiles;
+}
+
+function createPathsFromExistingTiles(
+  width: number,
+  height: number,
+  tiles: GridTile[][],
+  pathTiles: Vec2[]
+): GamePathType[] {
+  const paths: GamePathType[] = [];
+
+  // Find connected path segments
+  const pathGroups = findConnectedPathGroups(pathTiles, tiles);
+
+  pathGroups.forEach((group, index) => {
+    // Find start and end points for each path group
+    const { start, end } = findPathEndpoints(group, width);
+
+    if (start && end) {
+      const pathPoints = computePath(start, end, tiles);
+
+      paths.push({
+        id: index,
+        spawnPoint: start,
+        basePoint: end,
+        pathPoints,
+        name: `Custom Path ${index + 1}`,
+      });
+    }
+  });
+
+  // If no valid paths were created from existing tiles, fall back to default
+  if (paths.length === 0) {
+    return createDefaultPaths(width, height, tiles);
+  }
+
+  return paths;
+}
+
+function findConnectedPathGroups(
+  pathTiles: Vec2[],
+  tiles: GridTile[][]
+): Vec2[][] {
+  const groups: Vec2[][] = [];
+  const visited = new Set<string>();
+
+  for (const tile of pathTiles) {
+    const key = `${tile.x},${tile.y}`;
+    if (visited.has(key)) continue;
+
+    const group: Vec2[] = [];
+    const queue = [tile];
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      const currentKey = `${current.x},${current.y}`;
+
+      if (visited.has(currentKey)) continue;
+      visited.add(currentKey);
+      group.push(current);
+
+      // Check neighbors
+      const neighbors = [
+        { x: current.x - 1, y: current.y },
+        { x: current.x + 1, y: current.y },
+        { x: current.x, y: current.y - 1 },
+        { x: current.x, y: current.y + 1 },
+      ];
+
+      for (const neighbor of neighbors) {
+        if (
+          neighbor.x >= 0 &&
+          neighbor.x < tiles[0].length &&
+          neighbor.y >= 0 &&
+          neighbor.y < tiles.length &&
+          tiles[neighbor.y][neighbor.x].type === "path" &&
+          !visited.has(`${neighbor.x},${neighbor.y}`)
+        ) {
+          queue.push(neighbor);
+        }
+      }
+    }
+
+    if (group.length > 0) {
+      groups.push(group);
+    }
+  }
+
+  return groups;
+}
+
+function findPathEndpoints(
+  pathGroup: Vec2[],
+  width: number
+): { start: Vec2 | null; end: Vec2 | null } {
+  let start: Vec2 | null = null;
+  let end: Vec2 | null = null;
+
+  // Look for tiles at the edges of the map
+  for (const tile of pathGroup) {
+    // Left edge (spawn point)
+    if (tile.x === 0 && !start) {
+      start = tile;
+    }
+    // Right edge (base point)
+    if (tile.x === width - 1 && !end) {
+      end = tile;
+    }
+  }
+
+  // If no edge tiles found, use the leftmost and rightmost tiles
+  if (!start || !end) {
+    pathGroup.sort((a, b) => a.x - b.x);
+    start = start || pathGroup[0];
+    end = end || pathGroup[pathGroup.length - 1];
+  }
+
+  return { start, end };
+}
+
+function createDefaultPaths(
+  width: number,
+  height: number,
+  tiles: GridTile[][]
+): GamePathType[] {
   const paths: GamePathType[] = [];
 
   // Path 1: North route (top third of map)

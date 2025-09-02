@@ -130,7 +130,6 @@ function exportMapToJSON(grid: GameGridType): MapJSON {
     width: grid.width,
     height: grid.height,
     tiles: {
-      buildable: [],
       blocked: [],
       path: [],
     },
@@ -141,13 +140,12 @@ function exportMapToJSON(grid: GameGridType): MapJSON {
       const tile = grid.tiles[y][x];
       const pos = { x, y };
 
-      if (tile.type === "buildable") {
-        mapData.tiles.buildable.push(pos);
-      } else if (tile.type === "blocked") {
+      if (tile.type === "blocked") {
         mapData.tiles.blocked.push(pos);
       } else if (tile.type === "path") {
         mapData.tiles.path.push(pos);
       }
+      // buildable tiles are not exported - they're computed as "everything else"
     }
   }
 
@@ -189,7 +187,7 @@ function importMapFromJSON(mapData: MapJSON): GameGridType {
     }
   });
 
-  // Create paths from the path tiles (simplified - using existing path logic)
+  // Create paths - this will now respect existing path tiles or create defaults
   const paths = GamePath.createMultiplePaths(
     mapData.width,
     mapData.height,

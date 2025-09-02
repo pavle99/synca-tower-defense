@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,19 +9,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useGameStore } from "@/state/store";
-import { MapIcon } from "lucide-react";
+import { MapIcon, WandSparkles } from "lucide-react";
+import { useState } from "react";
 import { CopyMapButton } from "./components/copy-map-button";
-import { MapJsonEditor } from "./components/map-json-editor";
 import { ErrorDisplay } from "./components/error-display";
+import { MapJsonEditor } from "./components/map-json-editor";
 import {
+  copyMapToClipboard,
   exportCurrentMap,
   parseMapData,
-  copyMapToClipboard,
 } from "./utils/map-json";
 import { validateMapData } from "./utils/validation";
 
 export function MapEditor() {
-  const { game, loadMapFromJSON } = useGameStore();
+  const { game, loadMapFromJSON, isRunning } = useGameStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [jsonInput, setJsonInput] = useState("");
@@ -62,7 +62,7 @@ export function MapEditor() {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild disabled={isRunning}>
         <Button variant="outline" size="sm">
           <MapIcon className="w-4 h-4 mr-2" />
           Map Editor
@@ -72,9 +72,11 @@ export function MapEditor() {
         <DialogHeader>
           <DialogTitle>Map Editor</DialogTitle>
           <DialogDescription>
-            Edit the current map by modifying the JSON configuration. The map
-            contains three types of tiles: buildable (where towers can be
-            placed), blocked (impassable), and path (where enemies walk).
+            Edit the current map by modifying the JSON configuration. You can
+            define blocked tiles (impassable) and path tiles (where enemies
+            walk). All remaining tiles will automatically be buildable (where
+            towers can be placed). Custom path tiles will be used to create
+            enemy routes.
           </DialogDescription>
         </DialogHeader>
 
@@ -90,10 +92,20 @@ export function MapEditor() {
           {error && <ErrorDisplay error={error} />}
 
           <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-md">
-            <strong>Tip:</strong> The JSON contains positions for buildable,
-            blocked, and path tiles. Make sure your map has at least one path
-            for enemies to walk on. After applying changes, the game will
-            restart with the new map configuration.
+            <div className="flex items-start gap-2">
+              <WandSparkles className="w-3 h-3 text-amber-500 mt-0.5 shrink-0" />
+              <div>
+                <strong>Smart Map Processing:</strong> The JSON contains
+                positions for blocked and path tiles only. Buildable tiles are
+                automatically computed as all remaining space. Custom path tiles
+                will create connected routes for enemies. If you create
+                disconnected paths, they'll be automatically connected. If you
+                place blocked tiles on paths, they'll be automatically removed
+                to keep routes clear. If no path tiles are provided, default
+                paths will be generated. After applying changes, the game will
+                restart with the new map configuration.
+              </div>
+            </div>
           </div>
         </div>
 
