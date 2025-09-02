@@ -1,7 +1,7 @@
 import type { GameType } from "@/engine/game/types";
 import type { TowerBlueprint } from "@/engine/towers/types";
 import type { CanvasRenderer } from "@/renderers/canvas";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { Vec2 } from "@/utils/vector";
 import { useEffect, useRef } from "react";
 

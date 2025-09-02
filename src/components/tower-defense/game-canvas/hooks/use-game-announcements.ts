@@ -1,4 +1,4 @@
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { Vec2 } from "@/utils/vector";
 import { useCallback, useEffect } from "react";
 

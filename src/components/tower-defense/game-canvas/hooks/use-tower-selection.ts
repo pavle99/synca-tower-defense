@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { Tower } from "@/engine/towers/types";
 
 export function useTowerSelection() {

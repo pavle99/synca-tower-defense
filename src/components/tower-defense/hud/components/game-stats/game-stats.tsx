@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import { DollarSign, Heart, Zap } from "lucide-react";
 import { getWaveProgressText } from "../../utils/wave-progress";
 import { HelpDialog } from "./components/help-dialog/help-dialog";
@@ -97,10 +97,15 @@ export const GameStats = () => {
                 state.waveInProgress ? "wave-progress" : undefined
               }
             >
-              {endlessMode ? `Wave ${state.currentWave}` : `${state.currentWave} / ${game.waves.length}`}
+              {endlessMode
+                ? `Wave ${state.currentWave}`
+                : `${state.currentWave} / ${game.waves.length}`}
             </Badge>
             {endlessMode && (
-              <Badge variant="default" className="text-xs bg-purple-500 hover:bg-purple-600">
+              <Badge
+                variant="default"
+                className="text-xs bg-purple-500 hover:bg-purple-600"
+              >
                 Endless
               </Badge>
             )}

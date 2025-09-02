@@ -1,6 +1,6 @@
 import type { AnnouncementPriority } from "@/hooks/use-live-announcements";
 import type { CanvasRenderer } from "@/renderers/canvas";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { Vec2 } from "@/utils/vector";
 import { useCallback, useState } from "react";
 

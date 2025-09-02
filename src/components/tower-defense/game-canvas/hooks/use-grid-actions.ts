@@ -1,4 +1,4 @@
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { Vec2 } from "@/utils/vector";
 import type { Tower } from "@/engine/towers/types";
 
@@ -8,7 +8,7 @@ interface UseGridActionsProps {
   announceUrgent: (message: string) => void;
 }
 
-export function useGridActions({ 
+export function useGridActions({
   setSelectedTower,
   announceGameEvent,
   announceUrgent,
@@ -19,6 +19,7 @@ export function useGridActions({
     selectedTowerBlueprint,
     selectTowerBlueprint,
     pauseGame,
+    isRunning,
   } = useGameStore();
 
   const handleGridAction = (position: Vec2) => {
@@ -46,7 +47,7 @@ export function useGridActions({
           "Tower selected",
           `${tower.kind} tower, tier ${tower.tier}`
         );
-        if (game.state.gameStatus === "playing") {
+        if (game.state.gameStatus === "playing" && isRunning) {
           pauseGame();
         }
       }

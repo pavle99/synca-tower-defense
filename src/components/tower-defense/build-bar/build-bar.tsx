@@ -1,5 +1,5 @@
 import { GameTowers } from "@/engine/towers/towers";
-import { useGameStore } from "../../../state/store";
+import { useGameStore } from "../../../state/tower-defense-store";
 import {
   Card,
   CardContent,

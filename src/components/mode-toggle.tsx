@@ -8,15 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/components/theme-provider";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
+import { usePortalStore } from "@/state/portal-store";
 
 export function ModeToggle() {
+  const { openPortal, setOpenPortal } = usePortalStore();
+
   const { isRunning } = useGameStore();
 
   const { setTheme } = useTheme();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={openPortal === "mode-toggle"}
+      onOpenChange={(open) => setOpenPortal(open ? "mode-toggle" : null)}
+    >
       {/* Portals need to be disabled when the game is running to prevent canvas flickering */}
       <DropdownMenuTrigger asChild disabled={isRunning}>
         <Button variant="outline" size="icon">

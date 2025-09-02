@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGameStore } from "../../../state/store";
+import { useGameStore } from "../../../state/tower-defense-store";
 import { useLiveAnnouncements } from "../../../hooks/use-live-announcements";
 import type { Vec2 } from "@/utils/vector";
 

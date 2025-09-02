@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import { MapIcon, WandSparkles } from "lucide-react";
 import { useState } from "react";
 import { CopyMapButton } from "./components/copy-map-button";
@@ -20,16 +20,18 @@ import {
   parseMapData,
 } from "./utils/map-json";
 import { validateMapData } from "./utils/validation";
+import { usePortalStore } from "@/state/portal-store";
 
 export function MapEditor() {
   const { game, loadMapFromJSON, isRunning } = useGameStore();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const { openPortal, setOpenPortal } = usePortalStore();
+
   const [jsonInput, setJsonInput] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
+    setOpenPortal(open ? "map-editor" : null);
     if (open) {
       // Pre-fill with current map when opening
       const currentMap = exportCurrentMap(game);
@@ -52,7 +54,7 @@ export function MapEditor() {
       loadMapFromJSON(mapData);
 
       setError(null);
-      setIsOpen(false);
+      setOpenPortal(null);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Invalid JSON format";
@@ -61,7 +63,7 @@ export function MapEditor() {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={openPortal === "map-editor"} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild disabled={isRunning}>
         <Button variant="outline" size="sm">
           <MapIcon className="w-4 h-4 mr-2" />
@@ -110,7 +112,7 @@ export function MapEditor() {
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button variant="outline" onClick={() => setOpenPortal(null)}>
             Cancel
           </Button>
           <Button onClick={handleApplyMap} disabled={!jsonInput.trim()}>

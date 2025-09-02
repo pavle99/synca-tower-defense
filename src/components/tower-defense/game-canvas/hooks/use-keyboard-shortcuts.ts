@@ -1,12 +1,12 @@
 import { useKeyboard } from "@/hooks/use-keyboard";
-import { useHelpDialog } from "@/hooks/use-help-dialog";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import { GameTowers } from "@/engine/towers/towers";
 import type { Tower } from "@/engine/towers/types";
 import { Game } from "@/engine/game/game";
 import type { GridNavigation } from "./use-grid-navigation";
 import { KEYBOARD_SHORTCUTS } from "@/constants/keyboard-shortcuts";
 import type { FocusedElement } from "@/type/focused-element";
+import { usePortalStore } from "@/state/portal-store";
 
 interface KeyboardShortcut {
   key: string;
@@ -37,28 +37,34 @@ function useGlobalShortcuts(
     startNextWave,
   } = useGameStore();
 
-  const { openHelp } = useHelpDialog();
+  const { openPortal, setOpenPortal } = usePortalStore();
 
   const globalShortcuts: KeyboardShortcut[] = [
     {
       key: KEYBOARD_SHORTCUTS.HELP,
       handler: () => {
-        openHelp();
+        if (isRunning) return;
+
+        setOpenPortal("help-dialog");
         announceGameEvent("Help dialog opened");
       },
     },
     {
       key: KEYBOARD_SHORTCUTS.PAUSE,
       handler: () => {
+        if (openPortal) return;
+
         if (game.state.gameStatus === "paused") {
           resumeGame();
           announceGameEvent("Game resumed");
         } else if (game.state.gameStatus === "playing") {
-          pauseGame();
-          announceGameEvent("Game paused");
-        } else if (!isRunning) {
-          startGame();
-          announceGameEvent("Game started");
+          if (!isRunning) {
+            startGame();
+            announceGameEvent("Game started");
+          } else {
+            pauseGame();
+            announceGameEvent("Game paused");
+          }
         }
       },
     },
@@ -77,6 +83,8 @@ function useGlobalShortcuts(
     {
       key: KEYBOARD_SHORTCUTS.RESTART,
       handler: () => {
+        if (openPortal) return;
+
         restartGame();
         announceGameEvent("Game restarted");
       },

@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 
 export const GameStatus = () => {
   const { game } = useGameStore();

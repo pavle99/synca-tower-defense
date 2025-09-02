@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import type { Vec2 } from "@/utils/vector";
 import { getInteractionCoordinates } from "../utils/canvas-utils";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import type { AnnouncementPriority } from "@/hooks/use-live-announcements";
 import type { Tower } from "@/engine/towers/types";
 import type { CanvasRenderer } from "@/renderers/canvas";

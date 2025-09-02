@@ -1,6 +1,5 @@
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import { HelpCircle } from "lucide-react";
-import { useHelpDialog } from "../../../../../../../hooks/use-help-dialog";
 import { Button } from "../../../../../../ui/button";
 import {
   Dialog,
@@ -13,13 +12,18 @@ import { AccessibilityFeatures } from "./components/accessibility-features";
 import { GameInstructions } from "./components/game-instructions";
 import { KeyboardShortcuts } from "./components/keyboard-shortcuts";
 import { QuickReference } from "./components/quick-reference";
+import { usePortalStore } from "@/state/portal-store";
 
 export function HelpDialog() {
   const { isRunning } = useGameStore();
-  const { isOpen, toggleHelp, closeHelp } = useHelpDialog();
+
+  const { openPortal, setOpenPortal } = usePortalStore();
 
   return (
-    <Dialog open={isOpen} onOpenChange={toggleHelp}>
+    <Dialog
+      open={openPortal === "help-dialog"}
+      onOpenChange={(open) => setOpenPortal(open ? "help-dialog" : null)}
+    >
       {/* Portals need to be disabled when the game is running to prevent canvas flickering */}
       <DialogTrigger asChild disabled={isRunning}>
         <Button
@@ -54,7 +58,7 @@ export function HelpDialog() {
         </div>
 
         <div className="flex justify-end mt-6">
-          <Button onClick={closeHelp}>Got it!</Button>
+          <Button onClick={() => setOpenPortal(null)}>Got it!</Button>
         </div>
       </DialogContent>
     </Dialog>

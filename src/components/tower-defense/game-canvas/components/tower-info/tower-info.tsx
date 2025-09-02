@@ -1,6 +1,6 @@
 import { GameTowers } from "@/engine/towers/towers";
 import type { TargetingStrategy, Tower } from "@/engine/towers/types";
-import { useGameStore } from "@/state/store";
+import { useGameStore } from "@/state/tower-defense-store";
 import { Target } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "../../../../ui/badge";
