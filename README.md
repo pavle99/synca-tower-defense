@@ -128,6 +128,9 @@ Memory usage remains stable throughout extended gameplay sessions, demonstrating
 - **10-minute Mark**: Long-term memory stability verification
 
 *Screenshots: Memory snapshots at start, 5min, and 10min marks*
+<img width="1510" height="1978" alt="memory-start" src="https://github.com/user-attachments/assets/d0205ffb-40ae-4ae4-aa51-278be3ed06f7" />
+<img width="1504" height="1985" alt="memory-5min" src="https://github.com/user-attachments/assets/f75bd821-d5ae-47a7-b31a-69869e04901e" />
+<img width="1504" height="1985" alt="memory-10min" src="https://github.com/user-attachments/assets/49560404-cacf-4bdc-899f-d02b6f6d4c01" />
 
 ### Runtime Performance
 
@@ -138,6 +141,7 @@ The game maintains smooth performance during intensive gameplay scenarios:
 - **Result**: Stable performance even under CPU throttling
 
 *Screenshot: Chrome DevTools Performance tab showing 30-second gameplay profile*
+<img width="1731" height="1987" alt="performance" src="https://github.com/user-attachments/assets/96e78a75-a09a-4ddb-ac6a-42d5475af7ab" />
 
 ### Lighthouse Audit
 
@@ -149,6 +153,7 @@ Comprehensive web performance audit results:
 - **SEO**: Proper meta tags and structure
 
 *Screenshot: Lighthouse audit results*
+<img width="1241" height="2014" alt="lighthouse" src="https://github.com/user-attachments/assets/5a1b4899-c50d-4a2b-a882-6280cf1b4877" />
 
 ### Performance Optimizations Implemented
 
